@@ -1,0 +1,76 @@
+\hypertarget{_cv_mat_serialization_8h}{
+\section{CvMatSerialization.h File Reference}
+\label{_cv_mat_serialization_8h}\index{CvMatSerialization.h@{CvMatSerialization.h}}
+}
+
+
+Provides functionality to serialize cv::Mat (OpenCV matrix) objects.  
+
+
+{\ttfamily \#include $<$opencv2/opencv.hpp$>$}\par
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{_cv_mat_serialization_8h_acea9fdd675604efa3fbfad98dda54d49}{saveMat} (cv::Mat \&m, std::string filename)
+\item 
+void \hyperlink{_cv_mat_serialization_8h_aa13edf2ba541ff1c4dd4d4214fa76b98}{loadMat} (cv::Mat \&m, std::string filename)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Provides functionality to serialize cv::Mat (OpenCV matrix) objects. \begin{DoxyAuthor}{Author}
+Christoph Heindl and Aydin Arik  \href{http://cheind.wordpress.com/2011/12/06/serialization-of-cvmat-objects-using-boost/}{\tt http://cheind.wordpress.com/2011/12/06/serialization-\/of-\/cvmat-\/objects-\/using-\/boost/}  \href{http://stackoverflow.com/questions/4170745/serializing-opencv-mat-vec3f}{\tt http://stackoverflow.com/questions/4170745/serializing-\/opencv-\/mat-\/vec3f} 
+\end{DoxyAuthor}
+
+
+Definition in file \hyperlink{_cv_mat_serialization_8h_source}{CvMatSerialization.h}.
+
+
+
+\subsection{Function Documentation}
+\hypertarget{_cv_mat_serialization_8h_aa13edf2ba541ff1c4dd4d4214fa76b98}{
+\index{CvMatSerialization.h@{CvMatSerialization.h}!loadMat@{loadMat}}
+\index{loadMat@{loadMat}!CvMatSerialization.h@{CvMatSerialization.h}}
+\subsubsection[{loadMat}]{\setlength{\rightskip}{0pt plus 5cm}void loadMat (
+\begin{DoxyParamCaption}
+\item[{cv::Mat \&}]{m, }
+\item[{std::string}]{filename}
+\end{DoxyParamCaption}
+)}}
+\label{_cv_mat_serialization_8h_aa13edf2ba541ff1c4dd4d4214fa76b98}
+Deserialize a matrix from a specified binary file.
+
+
+\begin{DoxyParams}{Parameters}
+{\em m} & Deserialised matrix. \\
+\hline
+{\em filename} & Binary file name. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 99 of file CvMatSerialization.cpp.
+
+\hypertarget{_cv_mat_serialization_8h_acea9fdd675604efa3fbfad98dda54d49}{
+\index{CvMatSerialization.h@{CvMatSerialization.h}!saveMat@{saveMat}}
+\index{saveMat@{saveMat}!CvMatSerialization.h@{CvMatSerialization.h}}
+\subsubsection[{saveMat}]{\setlength{\rightskip}{0pt plus 5cm}void saveMat (
+\begin{DoxyParamCaption}
+\item[{cv::Mat \&}]{m, }
+\item[{std::string}]{filename}
+\end{DoxyParamCaption}
+)}}
+\label{_cv_mat_serialization_8h_acea9fdd675604efa3fbfad98dda54d49}
+Serialize a matrix into a binary file with a chosen name.
+
+
+\begin{DoxyParams}{Parameters}
+{\em m} & Matrix to serialise. \\
+\hline
+{\em filename} & Name of the generated binary file. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 86 of file CvMatSerialization.cpp.
+

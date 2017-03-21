@@ -1,0 +1,87 @@
+\hypertarget{_cv_mat_serialization_8cpp}{
+\section{CvMatSerialization.cpp File Reference}
+\label{_cv_mat_serialization_8cpp}\index{CvMatSerialization.cpp@{CvMatSerialization.cpp}}
+}
+{\ttfamily \#include \char`\"{}CvMatSerialization.h\char`\"{}}\par
+{\ttfamily \#include $<$fstream$>$}\par
+{\ttfamily \#include $<$boost/archive/binary\_\-oarchive.hpp$>$}\par
+{\ttfamily \#include $<$boost/archive/binary\_\-iarchive.hpp$>$}\par
+{\ttfamily \#include $<$boost/serialization/split\_\-free.hpp$>$}\par
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+namespace \hyperlink{namespaceboost}{boost}
+\item 
+namespace \hyperlink{namespaceboost_1_1serialization}{boost::serialization}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{_cv_mat_serialization_8cpp_ad12f29f06acb11c6605fd472cd010840}{BOOST\_\-SERIALIZATION\_\-SPLIT\_\-FREE} (cv::Mat)
+\item 
+{\footnotesize template$<$class Archive $>$ }\\void \hyperlink{namespaceboost_1_1serialization_a96b0430babb44e743d63b573d3eaf17c}{boost::serialization::save} (Archive \&ar, const cv::Mat \&m, const unsigned int version)
+\item 
+{\footnotesize template$<$class Archive $>$ }\\void \hyperlink{namespaceboost_1_1serialization_ab5cbc5a44d19c517fdaee14d3835c0ae}{boost::serialization::load} (Archive \&ar, cv::Mat \&m, const unsigned int version)
+\item 
+void \hyperlink{_cv_mat_serialization_8cpp_acea9fdd675604efa3fbfad98dda54d49}{saveMat} (cv::Mat \&m, std::string filename)
+\item 
+void \hyperlink{_cv_mat_serialization_8cpp_aa13edf2ba541ff1c4dd4d4214fa76b98}{loadMat} (cv::Mat \&m, std::string filename)
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\hypertarget{_cv_mat_serialization_8cpp_ad12f29f06acb11c6605fd472cd010840}{
+\index{CvMatSerialization.cpp@{CvMatSerialization.cpp}!BOOST\_\-SERIALIZATION\_\-SPLIT\_\-FREE@{BOOST\_\-SERIALIZATION\_\-SPLIT\_\-FREE}}
+\index{BOOST\_\-SERIALIZATION\_\-SPLIT\_\-FREE@{BOOST\_\-SERIALIZATION\_\-SPLIT\_\-FREE}!CvMatSerialization.cpp@{CvMatSerialization.cpp}}
+\subsubsection[{BOOST\_\-SERIALIZATION\_\-SPLIT\_\-FREE}]{\setlength{\rightskip}{0pt plus 5cm}BOOST\_\-SERIALIZATION\_\-SPLIT\_\-FREE (
+\begin{DoxyParamCaption}
+\item[{cv::Mat}]{}
+\end{DoxyParamCaption}
+)}}
+\label{_cv_mat_serialization_8cpp_ad12f29f06acb11c6605fd472cd010840}
+\hypertarget{_cv_mat_serialization_8cpp_aa13edf2ba541ff1c4dd4d4214fa76b98}{
+\index{CvMatSerialization.cpp@{CvMatSerialization.cpp}!loadMat@{loadMat}}
+\index{loadMat@{loadMat}!CvMatSerialization.cpp@{CvMatSerialization.cpp}}
+\subsubsection[{loadMat}]{\setlength{\rightskip}{0pt plus 5cm}void loadMat (
+\begin{DoxyParamCaption}
+\item[{cv::Mat \&}]{m, }
+\item[{std::string}]{filename}
+\end{DoxyParamCaption}
+)}}
+\label{_cv_mat_serialization_8cpp_aa13edf2ba541ff1c4dd4d4214fa76b98}
+Deserialize a matrix from a specified binary file.
+
+
+\begin{DoxyParams}{Parameters}
+{\em m} & Deserialised matrix. \\
+\hline
+{\em filename} & Binary file name. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 99 of file CvMatSerialization.cpp.
+
+\hypertarget{_cv_mat_serialization_8cpp_acea9fdd675604efa3fbfad98dda54d49}{
+\index{CvMatSerialization.cpp@{CvMatSerialization.cpp}!saveMat@{saveMat}}
+\index{saveMat@{saveMat}!CvMatSerialization.cpp@{CvMatSerialization.cpp}}
+\subsubsection[{saveMat}]{\setlength{\rightskip}{0pt plus 5cm}void saveMat (
+\begin{DoxyParamCaption}
+\item[{cv::Mat \&}]{m, }
+\item[{std::string}]{filename}
+\end{DoxyParamCaption}
+)}}
+\label{_cv_mat_serialization_8cpp_acea9fdd675604efa3fbfad98dda54d49}
+Serialize a matrix into a binary file with a chosen name.
+
+
+\begin{DoxyParams}{Parameters}
+{\em m} & Matrix to serialise. \\
+\hline
+{\em filename} & Name of the generated binary file. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 86 of file CvMatSerialization.cpp.
+

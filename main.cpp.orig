@@ -1,0 +1,192 @@
+/*------------------------------------------------------------------------------------------*\
+   This file contains material supporting chapter 9 of the cookbook:  
+   Computer Vision Programming using the OpenCV Library. 
+   by Robert Laganiere, Packt Publishing, 2011.
+
+   This program is free software; permission is hereby granted to use, copy, modify, 
+   and distribute this source code, or portions thereof, for any purpose, without fee, 
+   subject to the restriction that the copyright notice may not be removed 
+   or altered from any source or altered source distribution. 
+   The software is released on an as-is basis and without any warranties of any kind. 
+   In particular, the software is not guaranteed to be fault-tolerant or free from failure. 
+   The author disclaims all warranties with regard to this software, any use, 
+   and any consequent failure, is purely the responsibility of the user.
+ 
+   Copyright (C) 2010-2011 Robert Laganiere, www.laganiere.name
+\*------------------------------------------------------------------------------------------*/
+
+#include <iostream>
+#include <vector>
+#include <opencv2/core/core.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
+#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/features2d/features2d.hpp>
+#include <opencv2/calib3d/calib3d.hpp>
+#include "matcher.h"
+#include "cvmat_serialization.h"
+#include <ctime>
+#include "kinect.h"
+
+int objectRecognition(cv::Mat image2) {
+    
+    vector <cv::Mat> imgs(4);
+    
+    imgs.insert(imgs.end(), cv::imread("../../Images/Objects/starcraft.jpg", CV_LOAD_IMAGE_GRAYSCALE));
+    imgs.insert(imgs.end(), cv::imread("../../Images/Objects/calculator.jpg", CV_LOAD_IMAGE_GRAYSCALE));
+    imgs.insert(imgs.end(), cv::imread("../../Images/Objects/mathset.jpg", CV_LOAD_IMAGE_GRAYSCALE));
+    imgs.insert(imgs.end(), cv::imread("../../Images/Objects/textbook.jpg", CV_LOAD_IMAGE_GRAYSCALE));
+    
+    cv::Mat image1;
+    for(std::vector<cv::Mat>::iterator it = imgs.begin(); it != imgs.end(); ++it) {
+        image1 = *it;
+        // Read input images
+        //    cv::Mat image1 = cv::imread("../../Images/Objects/starcraft.jpg", CV_LOAD_IMAGE_GRAYSCALE);
+        //        cv::Mat image2 = cv::imread("../../Images/Textbook/textbook9.jpg", CV_LOAD_IMAGE_GRAYSCALE);
+
+        if (!image1.data || !image2.data)
+            return 0;
+
+        // Prepare the matcher
+        RobustMatcher rmatcher;
+        rmatcher.setConfidenceLevel(0.90);
+        rmatcher.setMinDistanceToEpipolar(3.0);
+        rmatcher.setRatio(1.5f);
+        rmatcher.refineFundamental(true);
+        cv::Ptr<cv::FeatureDetector> pfd = new cv::SurfFeatureDetector(750);
+        rmatcher.setFeatureDetector(pfd);
+
+        // Match the two images
+        std::vector<cv::DMatch> matches;
+        std::vector<cv::KeyPoint> keypoints1, keypoints2;
+
+        rmatcher.match(image1, image2, matches, keypoints1, keypoints2);
+
+
+        // draw the matches
+        cv::Mat imageMatches;
+        cv::drawMatches(image1, keypoints1, // 1st image and its keypoints
+                image2, keypoints2, // 2nd image and its keypoints
+                matches, // the matches
+                imageMatches, // the image produced
+                cv::Scalar(255, 255, 255)); // color of the lines
+
+        // Convert keypoints into Point2f	
+        std::vector<cv::Point2f> points1, points2;
+
+        for (std::vector<cv::DMatch>::const_iterator it = matches.begin();
+                it != matches.end(); ++it) {
+
+            // Get the position of left keypoints
+            float x = keypoints1[it->queryIdx].pt.x;
+            float y = keypoints1[it->queryIdx].pt.y;
+            points1.push_back(cv::Point2f(x, y));
+            cv::circle(image1, cv::Point(x, y), 3, cv::Scalar(255, 255, 255), 3);
+            // Get the position of right keypoints
+            x = keypoints2[it->trainIdx].pt.x;
+            y = keypoints2[it->trainIdx].pt.y;
+            cv::circle(image2, cv::Point(x, y), 3, cv::Scalar(255, 255, 255), 3);
+            points2.push_back(cv::Point2f(x, y));
+        }
+
+        try {
+            /***************************************************************************************************
+             *                                                  Put a green box around the object found....
+             ***************************************************************************************************/
+            //-- Localize the object from img_1 in img_2 
+            cv::vector<cv::Point2f> obj;
+            cv::vector<cv::Point2f> scene;
+
+            for (int i = 0; i < matches.size(); i++) {
+                //-- Get the keypoints from the good matches
+                obj.push_back(keypoints1[ matches[i].queryIdx ].pt);
+                scene.push_back(keypoints2[ matches[i].trainIdx ].pt);
+            }
+
+            cv::Mat H = cv::findHomography(obj, scene, CV_RANSAC);
+
+
+            //-- Get the corners from the image_1 ( the object to be "detected" )
+            cv::Point2f obj_corners[4] = {cvPoint(0, 0), cvPoint(image1.cols, 0), cvPoint(image1.cols, image1.rows), cvPoint(0, image1.rows)};
+            cv::Point scene_corners[4];
+
+            //-- Map these corners in the scene ( image_2)
+            for (int i = 0; i < 4; i++) {
+                double x = obj_corners[i].x;
+                double y = obj_corners[i].y;
+
+                double Z = 1. / (H.at<double>(2, 0) * x + H.at<double>(2, 1) * y + H.at<double>(2, 2));
+                double X = (H.at<double>(0, 0) * x + H.at<double>(0, 1) * y + H.at<double>(0, 2)) * Z;
+                double Y = (H.at<double>(1, 0) * x + H.at<double>(1, 1) * y + H.at<double>(1, 2)) * Z;
+                scene_corners[i] = cvPoint(cvRound(X) + image1.cols, cvRound(Y));
+            }
+
+            if (matches.size() <= 30) {
+                //-- Draw lines between the corners (the mapped object in the scene - image_2 )
+                cv::line(imageMatches, scene_corners[0], scene_corners[1], cv::Scalar(0, 0, 255), 2);
+                cv::line(imageMatches, scene_corners[1], scene_corners[2], cv::Scalar(0, 0, 255), 2);
+                cv::line(imageMatches, scene_corners[2], scene_corners[3], cv::Scalar(0, 0, 255), 2);
+                cv::line(imageMatches, scene_corners[3], scene_corners[0], cv::Scalar(0, 0, 255), 2);
+            } else {
+                cv::line(imageMatches, scene_corners[0], scene_corners[1], cv::Scalar(0, 255, 0), 2);
+                cv::line(imageMatches, scene_corners[1], scene_corners[2], cv::Scalar(0, 255, 0), 2);
+                cv::line(imageMatches, scene_corners[2], scene_corners[3], cv::Scalar(0, 255, 0), 2);
+                cv::line(imageMatches, scene_corners[3], scene_corners[0], cv::Scalar(0, 255, 0), 2);
+            }
+        } catch (cv::Exception& ex) {
+            //Do nothing...
+        }
+
+
+        //-- Show detected matches
+        cv::imshow("Good Matches & Object detection", imageMatches);
+    }
+    return 1;
+}
+
+
+
+int main(int argc, char **argv) {
+
+    //    time_t time;
+    //    time_t prevtime;
+    //    prevtime = std::time(0);
+    //    time = std::time(0);
+    //    std::cout << (time - prevtime) << std::endl;
+
+
+    //    Mat rgbMat(Size(640, 480), CV_8UC3, Scalar(0));
+    cv::Mat frame;
+    
+
+
+    bool stop(false);
+
+    // Delay between each frame
+    // corresponds to video frame rate
+    int delay = 1000 / 30; //30hz
+
+
+    //The next two lines must be changed as Freenect::Freenect isn't a template but the method createDevice:
+    //Freenect::Freenect<MyFreenectDevice> freenect;
+    //MyFreenectDevice& device = freenect.createDevice(0);
+    //by these two lines:
+    Freenect::Freenect freenect;
+    MyFreenectDevice& device = freenect.createDevice< MyFreenectDevice > (0);
+
+//    namedWindow("rgb", CV_WINDOW_AUTOSIZE);
+    device.startVideo();
+
+    //    // for all frames in video
+    while (!stop) {
+        device.getVideo(frame);
+        objectRecognition(frame);
+
+        if (cv::waitKey(delay) >= 0) {//any key
+            cvDestroyWindow("rgb");
+            stop = true;
+        }
+    }
+
+    device.stopVideo();
+    return 0;
+}

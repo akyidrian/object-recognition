@@ -1,0 +1,78 @@
+\hypertarget{class_timer}{
+\section{Timer Class Reference}
+\label{class_timer}\index{Timer@{Timer}}
+}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{class_timer_a2f244e18a7a03b152b863cf3548e1073}{recordTime} ()
+\item 
+timespec \hyperlink{class_timer_af683d339e901e344efb85efb54f67c66}{getCurrTimeDiff} ()
+\item 
+timespec \hyperlink{class_timer_a89f3669a6384c9e8bb47c650ee8a2bf3}{getTimeDiffAvg} ()
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+
+
+Definition at line 22 of file Timer.h.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_timer_af683d339e901e344efb85efb54f67c66}{
+\index{Timer@{Timer}!getCurrTimeDiff@{getCurrTimeDiff}}
+\index{getCurrTimeDiff@{getCurrTimeDiff}!Timer@{Timer}}
+\subsubsection[{getCurrTimeDiff}]{\setlength{\rightskip}{0pt plus 5cm}timespec Timer::getCurrTimeDiff (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{class_timer_af683d339e901e344efb85efb54f67c66}
+Get the most recently found time difference.
+
+\begin{DoxyReturn}{Returns}
+Most recent time difference. 
+\end{DoxyReturn}
+
+
+Definition at line 147 of file Timer.cpp.
+
+\hypertarget{class_timer_a89f3669a6384c9e8bb47c650ee8a2bf3}{
+\index{Timer@{Timer}!getTimeDiffAvg@{getTimeDiffAvg}}
+\index{getTimeDiffAvg@{getTimeDiffAvg}!Timer@{Timer}}
+\subsubsection[{getTimeDiffAvg}]{\setlength{\rightskip}{0pt plus 5cm}timespec Timer::getTimeDiffAvg (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{class_timer_a89f3669a6384c9e8bb47c650ee8a2bf3}
+Get the time difference average. Will get the most up to date average.
+
+\begin{DoxyReturn}{Returns}
+Average time difference. 
+\end{DoxyReturn}
+
+
+Definition at line 156 of file Timer.cpp.
+
+\hypertarget{class_timer_a2f244e18a7a03b152b863cf3548e1073}{
+\index{Timer@{Timer}!recordTime@{recordTime}}
+\index{recordTime@{recordTime}!Timer@{Timer}}
+\subsubsection[{recordTime}]{\setlength{\rightskip}{0pt plus 5cm}void Timer::recordTime (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{class_timer_a2f244e18a7a03b152b863cf3548e1073}
+Acts like a stop watch. First call to this will get a startTime, then a second will the the endTime. When an endTime is gotten, a time difference is found and stored. 
+
+Definition at line 126 of file Timer.cpp.
+
+
+
+The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
+\item 
+\hyperlink{_timer_8h}{Timer.h}\item 
+\hyperlink{_timer_8cpp}{Timer.cpp}\end{DoxyCompactItemize}
