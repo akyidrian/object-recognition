@@ -1,7 +1,9 @@
 Object Recognition
 ==================
 
-OpenCV/Kinect camera project that recognises objects in video.
+Prototype of object recognition system using OpenCV/Kinect camera. Identifies particular set of objects in video frames.
+
+This code was part of larger proof of concept project for developing an object recognition and mapping system. A large portion of the project involved researching popular computer vision algorithms and technologies at the time (2012).
 
 The 'Pipeline'
 --------------
